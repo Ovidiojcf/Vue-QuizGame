@@ -2,9 +2,26 @@
 //https://opentdb.com/api.php?amount=15&category=21&type=boolean
   export default{
     name: 'App',
+    data(){
+      return{
+        question: undefined,
+        incorrectAnswers: undefined,
+        correctAnswers: undefined,
+      }
+    },
+    computed:{
+      answers(){
+        var answers = [...this.incorrectAnswers];
+        answers.splice(Math.round(Math.random() * answers.length), 0,this.correctAnswers); //metodo para bagunçar/alternar as respostas
+        return answers;
+      }
+    }
+    ,
     created(){
       this.axios.get('https://opentdb.com/api.php?amount=15&category=21&type=boolean').then((response) => {
-        console.log(response.data.results)
+        this.question = response.data.results[0].question;
+        this.incorrectAnswers = response.data.results[0].incorrect_answers;
+        this.correctAnswers = response.data.results[0].correct_answer;
       })
     }
   }
@@ -13,7 +30,7 @@
 <template>
   <section class="app">
     <div>
-      <h2>Texto da pergunta</h2>
+      <h1 v-html="this.question"></h1>
     </div>
 
     <div>
