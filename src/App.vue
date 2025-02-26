@@ -1,6 +1,13 @@
-<script setup>
-//https://opentdb.com/api.php?amount=30&category=21&difficulty=medium&type=boolean&encode=url3986
-
+<script>
+//https://opentdb.com/api.php?amount=15&category=21&type=boolean
+  export default{
+    name: 'App',
+    created(){
+      this.axios.get('https://opentdb.com/api.php?amount=15&category=21&type=boolean').then((response) => {
+        console.log(response.data.results)
+      })
+    }
+  }
 </script>
 
 <template>
