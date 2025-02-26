@@ -1,4 +1,5 @@
 <script setup>
+//https://opentdb.com/api.php?amount=30&category=21&difficulty=medium&type=boolean&encode=url3986
 
 </script>
 
