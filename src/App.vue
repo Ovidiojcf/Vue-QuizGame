@@ -7,7 +7,8 @@ export default {
       question: undefined,
       incorrectAnswers: undefined,
       correctAnswers: undefined,
-      chosen_answer: undefined,
+      chosenAnswer: undefined,
+      answerSubmitted: false
     }
   },
   computed: {
@@ -27,13 +28,14 @@ export default {
   },
   methods:{
     submitAnswer(){
-      if(!this.chosen_answer){
+      if(!this.chosenAnswer){
         alert('Pick one of the options');
       }else{
-        if(this.chosen_answer == this.correctAnswers){
-          alert('you got ir right');
+        this.answerSubmitted = true;
+        if(this.chosenAnswer == this.correctAnswers){
+          console.log('you got ir right');
         }else{
-          alert('you failled');
+          console.log('you failled');
         }
       }
     }
@@ -50,10 +52,17 @@ export default {
 
 
       <template v-for="(answer, index) in this.answers" :key="index">
-        <input type="radio" name="options" :value="answer" v-model="this.chosen_answer">
+        <input :disable="this.answerSubmitted" type="radio" name="options" :value="answer" v-model="this.chosenAnswer">
         <label v-html="answer"></label><br>
       </template>
-      <button class="send" type="button" @click="this.submitAnswer()">Send</button>
+
+      <button v-if="!this.answerSubmitted" class="send" type="button" @click="this.submitAnswer()">Send</button>
+
+      <section v-if="this.answerSubmitted">
+        <h4 v-if="this.chosenAnswer == this.correctAnswers">Congratulations, the answer {{ this.correctAnswers }} is correct</h4>
+        <h4 v-else>I'm sorry, you picked the wrong answer.The correct answer is {{ this.correctAnswers }}</h4>
+        <button class="send" type="button">Next Question</button>
+      </section>
     </template>
 
 
