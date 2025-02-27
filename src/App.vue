@@ -1,7 +1,12 @@
 <script>
 //https://opentdb.com/api.php?amount=25
+import ScoreBoard from './components/ScoreBoard.vue';
+
 export default {
   name: 'App',
+  components:{
+    ScoreBoard
+  },
   data() {
     return {
       question: undefined,
@@ -19,13 +24,6 @@ export default {
     }
   }
   ,
-  created() {
-    this.axios.get('https://opentdb.com/api.php?amount=25').then((response) => {
-      this.question = response.data.results[0].question;
-      this.incorrectAnswers = response.data.results[0].incorrect_answers;
-      this.correctAnswers = response.data.results[0].correct_answer;
-    })
-  },
   methods:{
     submitAnswer(){
       if(!this.chosenAnswer){
@@ -38,13 +36,28 @@ export default {
           console.log('you failled');
         }
       }
+    },
+
+    getNewQuestion(){
+      this.answerSubmitted = false;
+      this.chosenAnswer = undefined;
+      this.question = undefined;
+      this.axios.get('https://opentdb.com/api.php?amount=25').then((response) => {
+      this.question = response.data.results[0].question;
+      this.incorrectAnswers = response.data.results[0].incorrect_answers;
+      this.correctAnswers = response.data.results[0].correct_answer;
+    })
     }
+  },
+  created() {
+    this,this.getNewQuestion();
   }
 }
 </script>
 
 <template>
   <section class="app">
+    <ScoreBoard/>
     <template v-if="this.question">
       <div>
         <h1 v-html="this.question"></h1>
@@ -61,7 +74,7 @@ export default {
       <section v-if="this.answerSubmitted">
         <h4 v-if="this.chosenAnswer == this.correctAnswers">Congratulations, the answer {{ this.correctAnswers }} is correct</h4>
         <h4 v-else>I'm sorry, you picked the wrong answer.The correct answer is {{ this.correctAnswers }}</h4>
-        <button class="send" type="button">Next Question</button>
+        <button  @click="this.getNewQuestion()" class="send" type="button">Next Question</button>
       </section>
     </template>
 
