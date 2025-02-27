@@ -13,7 +13,9 @@ export default {
       incorrectAnswers: undefined,
       correctAnswers: undefined,
       chosenAnswer: undefined,
-      answerSubmitted: false
+      answerSubmitted: false,
+      winCount: 0,
+      loseCount: 0
     }
   },
   computed: {
@@ -31,9 +33,9 @@ export default {
       }else{
         this.answerSubmitted = true;
         if(this.chosenAnswer == this.correctAnswers){
-          console.log('you got ir right');
+          this.winCount++;
         }else{
-          console.log('you failled');
+          this.loseCount++;
         }
       }
     },
@@ -57,7 +59,7 @@ export default {
 
 <template>
   <section class="app">
-    <ScoreBoard/>
+    <ScoreBoard :winCount="this.winCount" :loseCount="this.loseCount" />
     <template v-if="this.question">
       <div>
         <h1 v-html="this.question"></h1>
